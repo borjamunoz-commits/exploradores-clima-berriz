@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exploradores del clima | Colegio Bérriz</title>
+<style>
+:root{--green:#176b45;--green2:#2d9462;--yellow:#f5cf45;--ink:#18352a;--cream:#fffdf4;--pale:#eaf5ed;--blue:#dff2f7;--coral:#ffe8df}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(145deg,#f4faef,#fff9df);color:var(--ink)}
+header{background:var(--green);color:white;padding:18px 5vw;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;border-bottom:7px solid var(--yellow)}
+.brand{font-weight:900;letter-spacing:.5px;font-size:1.15rem}.brand span{color:var(--yellow)}
+.score{background:#ffffff20;border:1px solid #ffffff55;padding:9px 15px;border-radius:30px;font-weight:bold}
+main{max-width:1050px;margin:28px auto;padding:0 18px 50px}
+.hero{background:white;border-radius:24px;padding:30px;box-shadow:0 8px 25px #234b3020;display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center}
+h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin:8px 0 14px;color:var(--green)}h2{color:var(--green);margin-top:0}.eyebrow{font-weight:bold;color:#a17c00;text-transform:uppercase;letter-spacing:1.5px;font-size:.8rem}
+.hero p{font-size:1.12rem;line-height:1.55}.sun{font-size:8rem;text-align:center;filter:drop-shadow(0 7px 4px #d9c46b55)}
+.btn{border:0;border-radius:13px;padding:13px 19px;font-size:1rem;font-weight:bold;cursor:pointer;background:var(--green);color:white;transition:.15s}.btn:hover{transform:translateY(-2px);background:#0e5132}.btn.yellow{background:var(--yellow);color:#3c3515}.btn.light{background:#e8f2e9;color:var(--green)}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin:22px 0}.nav button{border:2px solid #c8dfce;background:white;color:var(--green);border-radius:30px;padding:10px 15px;font-weight:bold;cursor:pointer}.nav button.active{background:var(--green);color:white;border-color:var(--green)}
+.panel{background:white;border-radius:22px;padding:25px;box-shadow:0 6px 20px #234b3015;margin-top:18px}.hidden{display:none!important}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.climate{border:2px solid #e1eadf;border-radius:17px;padding:17px;background:#fff;cursor:pointer;text-align:left;color:var(--ink)}.climate:hover{border-color:var(--green);background:#f7fcf7}.climate .emoji{font-size:2.2rem}.climate strong{display:block;color:var(--green);font-size:1.1rem;margin:8px 0}.climate small{line-height:1.4;display:block}
+.info{background:var(--pale);padding:15px;border-radius:14px;line-height:1.55;margin:14px 0}.tag{display:inline-block;background:#fff1b9;padding:5px 9px;border-radius:20px;font-size:.82rem;font-weight:bold;margin:3px}
+.question{font-size:1.25rem;font-weight:bold;line-height:1.4;margin:15px 0}.answers{display:grid;gap:10px}.answer{padding:13px 15px;border:2px solid #dce8df;background:white;border-radius:12px;text-align:left;font-size:1rem;cursor:pointer}.answer:hover{border-color:var(--green)}.answer.correct{background:#e2f6e8;border-color:#279653}.answer.wrong{background:#ffebe7;border-color:#d76b57}.feedback{padding:13px;border-radius:12px;margin:13px 0;font-weight:bold}.good{background:#e2f6e8;color:#176b45}.bad{background:#ffebe7;color:#9a3d2d}
+.progress{height:10px;background:#e8eee8;border-radius:20px;overflow:hidden;margin:12px 0 20px}.progress div{height:100%;background:var(--yellow);width:0;transition:.3s}
+.mapbox{background:#eaf5f7;border-radius:18px;padding:15px}.mapgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:650px;margin:15px auto}.zone{min-height:82px;border:2px solid #c8dfe2;border-radius:12px;background:white;font-weight:bold;color:#275b62;cursor:pointer;padding:8px}.zone:hover,.zone.selected{background:#fff1b9;border-color:#c59d16}.zone small{display:block;font-weight:normal;font-size:.75rem;margin-top:5px}
+.footer{text-align:center;color:#61736a;font-size:.85rem;margin-top:25px}
+input{padding:12px;border:2px solid #d6e5d9;border-radius:10px;font-size:1rem;width:min(100%,350px)}
+@media(max-width:700px){.hero{grid-template-columns:1fr}.sun{font-size:5rem}.mapgrid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="brand">COLEGIO <span>BÉRRIZ</span> · APRENDEMOS EXPLORANDO</div><div class="score">⭐ Puntos: <span id="points">0</span></div></header>
+<main>
+<section id="home" class="hero">
+ <div><div class="eyebrow">Ciencias Sociales · 5.º de Primaria</div><h1>Exploradores del clima de España</h1>
+ <p>¿Preparado para viajar por España sin salir del aula? Descubre cómo son las temperaturas, las lluvias y los paisajes de cada zona. Supera los retos y consigue tu diploma de explorador o exploradora del clima.</p>
+ <button class="btn yellow" onclick="show('learn')">¡Comenzar la aventura! →</button></div>
+ <div class="sun">🌞🌦️</div>
+</section>
+<nav class="nav">
+<button class="active" data-page="learn" onclick="show('learn')">1. Descubre</button>
+<button data-page="map" onclick="show('map')">2. Sitúa en el mapa</button>
+<button data-page="game" onclick="startQuiz()">3. Supera los retos</button>
+<button data-page="final" onclick="show('final')">4. Mi diploma</button>
+</nav>
+<section id="learn" class="panel">
+<h2>1. Descubre los climas</h2><p>Lee las pistas y pulsa en cada tarjeta para conocer sus características.</p>
+<div class="cards">
+<button class="climate" onclick="detail('oceanico')"><span class="emoji">🌧️</span><strong>Oceánico</strong><small>Lluvias abundantes y temperaturas suaves. Norte de España.</small></button>
+<button class="climate" onclick="detail('medlitoral')"><span class="emoji">🏖️</span><strong>Mediterráneo litoral</strong><small>Veranos calurosos, inviernos suaves y lluvias irregulares. Costa mediterránea.</small></button>
+<button class="climate" onclick="detail('continental')"><span class="emoji">🌡️</span><strong>Mediterráneo continentalizado</strong><small>Inviernos fríos, veranos calurosos y gran diferencia de temperatura. Interior peninsular.</small></button>
+<button class="climate" onclick="detail('seco')"><span class="emoji">🌵</span><strong>Mediterráneo seco</strong><small>Lluvias muy escasas y sequía frecuente. Sureste peninsular.</small></button>
+<button class="climate" onclick="detail('montana')"><span class="emoji">🏔️</span><strong>De montaña</strong><small>Temperaturas bajas y precipitaciones abundantes; nieve en invierno. Zonas elevadas.</small></button>
+<button class="climate" onclick="detail('subtropical')"><span class="emoji">🌴</span><strong>Subtropical</strong><small>Temperaturas suaves todo el año y lluvias escasas en muchas zonas. Canarias.</small></button>
+</div><div id="detail" class="info hidden" aria-live="polite"></div>
+</section>
+<section id="map" class="panel hidden">
+<h2>2. Detective del mapa</h2><p>Observa las pistas y selecciona la zona donde predomina ese clima. Es un mapa esquemático para practicar la localización.</p>
+<div class="mapbox"><div class="mapgrid">
+<button class="zone" onclick="mapAnswer('oceanico')">NORTE<small>Galicia · Asturias · Cantabria · País Vasco</small></button>
+<button class="zone" onclick="mapAnswer('montana')">PIRINEOS Y CUMBRES<small>Grandes sistemas montañosos</small></button>
+<button class="zone" onclick="mapAnswer('medlitoral')">COSTA MEDITERRÁNEA<small>Este peninsular</small></button>
+<button class="zone" onclick="mapAnswer('continental')">INTERIOR<small>Meseta y zonas interiores</small></button>
+<button class="zone" onclick="mapAnswer('seco')">SURESTE<small>Almería y zonas próximas</small></button>
+<button class="zone" onclick="mapAnswer('subtropical')">ISLAS CANARIAS<small>Océano Atlántico</small></button>
+</div></div>
+<div id="mapfeedback" class="info">Pista: ¿en qué zona llueve con frecuencia durante buena parte del año?</div>
+</section>
+<section id="game" class="panel hidden">
+<h2>3. Reto de exploradores</h2><p>Responde a las 8 preguntas. ¡Cada acierto suma 10 puntos!</p>
+<div class="progress"><div id="bar"></div></div><div id="quiz"></div>
+</section>
+<section id="final" class="panel hidden">
+<h2>4. Tu diploma de explorador/a del clima</h2>
+<p>Escribe tu nombre y descubre cómo ha ido tu aventura.</p>
+<input id="student" placeholder="Escribe tu nombre" maxlength="40">
+<div class="info" style="margin-top:15px"><strong id="result">Llevas 0 puntos.</strong><br>Recuerda: conocer el clima nos ayuda a comprender los paisajes, la vegetación y la forma de vida de las personas.</div>
+<button class="btn yellow" onclick="diploma()">Generar mi diploma</button>
+<div id="certificate" class="panel hidden" style="text-align:center;border:4px solid #e3c13d">
+<div style="font-size:2.5rem">🏅🌍🏅</div><div class="eyebrow">Colegio Bérriz</div><h2>Diploma de Explorador/a del clima</h2><p>Se concede a</p><h1 id="certname" style="font-size:2.2rem"></h1><p>por completar la aventura de los climas de España.</p><h2 id="certpoints"></h2><p>¡Enhorabuena!</p><button class="btn light" onclick="window.print()">Imprimir diploma</button>
+</div>
+</section>
+<div class="footer">Recurso didáctico · Ciencias Sociales · 5.º de Primaria · Colegio Bérriz</div>
+</main>
+<script>
+const descriptions={
+oceanico:"Se localiza en el norte peninsular. Llueve de forma abundante y bastante regular. Las temperaturas son suaves: los veranos no suelen ser muy calurosos y los inviernos son moderados. Es frecuente encontrar prados y bosques.",
+medlitoral:"Aparece en buena parte de la costa mediterránea. Los veranos son calurosos y secos; los inviernos, suaves. Las lluvias son irregulares y suelen concentrarse en primavera y otoño. Son típicos los matorrales y bosques mediterráneos.",
+continental:"Predomina en zonas del interior de la Península. Los inviernos son fríos y los veranos calurosos, por lo que hay mucha diferencia entre ambas estaciones. Las precipitaciones son moderadas y a menudo escasas.",
+seco:"Se encuentra en áreas del sureste peninsular. Las precipitaciones son muy escasas e irregulares y puede haber largos periodos de sequía. La vegetación está adaptada a la falta de agua.",
+montana:"Se da en las zonas de mayor altitud. A medida que subimos, las temperaturas descienden. Los inviernos son fríos, puede nevar y las precipitaciones suelen ser abundantes. La vegetación cambia con la altura.",
+subtropical:"Es propio de las islas Canarias. Las temperaturas son suaves durante todo el año y las diferencias entre estaciones son pequeñas. En muchas zonas llueve poco, aunque el relieve crea diferencias entre unas islas y otras."
+};
+let points=0, qIndex=0, correct=0, mapDone=false;
+function show(id){document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='final')document.getElementById('result').textContent=`Llevas ${points} puntos. Has acertado ${correct} preguntas.`;window.scrollTo({top:0,behavior:'smooth'});}
+function detail(id){let names={oceanico:'Clima oceánico',medlitoral:'Clima mediterráneo litoral',continental:'Clima mediterráneo continentalizado',seco:'Clima mediterráneo seco',montana:'Clima de montaña',subtropical:'Clima subtropical'};let d=document.getElementById('detail');d.innerHTML='<strong>'+names[id]+'</strong><br>'+descriptions[id];d.classList.remove('hidden');}
+function mapAnswer(id){let f=document.getElementById('mapfeedback');let hints={oceanico:'¡Correcto! El clima oceánico se encuentra en el norte, cerca del océano Atlántico y el mar Cantábrico.',montana:'¡Bien! En las grandes cordilleras encontramos el clima de montaña.',medlitoral:'¡Así es! El clima mediterráneo litoral aparece en buena parte del este y sur costero.',continental:'¡Correcto! El interior peninsular presenta clima mediterráneo continentalizado.',seco:'¡Exacto! El sureste es una de las zonas más secas de la Península.',subtropical:'¡Muy bien! El clima subtropical corresponde a las islas Canarias.'};f.textContent=hints[id];f.style.background='#e2f6e8';if(!mapDone){points+=5;mapDone=true;document.getElementById('points').textContent=points;}}
+const questions=[
+{q:'¿En qué zona de España encontramos principalmente el clima oceánico?',a:['En el norte','En las islas Canarias','En el sureste'],c:0,e:'El norte recibe lluvias abundantes y tiene temperaturas suaves.'},
+{q:'¿Cómo suelen ser los veranos del clima mediterráneo litoral?',a:['Fríos y lluviosos','Calurosos y secos','Muy fríos y con nieve'],c:1,e:'Los veranos suelen ser calurosos y secos.'},
+{q:'¿Qué caracteriza al clima del interior peninsular?',a:['Temperaturas iguales todo el año','Inviernos fríos y veranos calurosos','Lluvias abundantes todos los meses'],c:1,e:'La diferencia entre las temperaturas del invierno y del verano es grande.'},
+{q:'¿Dónde encontramos el clima subtropical de España?',a:['En Galicia','En los Pirineos','En las islas Canarias'],c:2,e:'Las islas Canarias tienen clima subtropical.'},
+{q:'¿Qué ocurre con la temperatura cuando ascendemos una montaña?',a:['Desciende','Aumenta siempre','No cambia'],c:0,e:'A mayor altitud, normalmente hace más frío.'},
+{q:'¿Qué clima tiene precipitaciones muy escasas en el sureste?',a:['Oceánico','Mediterráneo seco','De montaña'],c:1,e:'El clima mediterráneo seco se caracteriza por la escasez de lluvias.'},
+{q:'¿En qué clima son frecuentes las lluvias durante gran parte del año?',a:['Oceánico','Mediterráneo seco','Subtropical'],c:0,e:'En el clima oceánico las lluvias son abundantes y regulares.'},
+{q:'¿Qué elemento del clima nos indica cuánto llueve?',a:['La altitud','La precipitación','La temperatura'],c:1,e:'Las precipitaciones indican la cantidad de agua que cae, por ejemplo en forma de lluvia o nieve.'}
+];
+function startQuiz(){qIndex=0;correct=0;show('game');renderQ();}
+function renderQ(){let root=document.getElementById('quiz');document.getElementById('bar').style.width=(qIndex/questions.length*100)+'%';if(qIndex>=questions.length){root.innerHTML=`<div class="feedback good">¡Reto terminado! Has conseguido ${correct} de ${questions.length} aciertos.</div><p>Tu puntuación total es de <strong>${points} puntos</strong>.</p><button class="btn yellow" onclick="show('final')">Ver mi diploma →</button> <button class="btn light" onclick="startQuiz()">Repetir reto</button>`;return;}let q=questions[qIndex];root.innerHTML=`<div class="eyebrow">Pregunta ${qIndex+1} de ${questions.length}</div><div class="question">${q.q}</div><div class="answers">${q.a.map((a,i)=>`<button class="answer" onclick="checkAnswer(${i})">${a}</button>`).join('')}</div><div id="feedback"></div>`;}
+function checkAnswer(i){let q=questions[qIndex],buttons=document.querySelectorAll('.answer');buttons.forEach((b,j)=>{b.disabled=true;if(j===q.c)b.classList.add('correct');if(j===i&&i!==q.c)b.classList.add('wrong');});let ok=i===q.c;if(ok){points+=10;correct++;document.getElementById('points').textContent=points;}document.getElementById('feedback').innerHTML=`<div class="feedback ${ok?'good':'bad'}">${ok?'¡Muy bien!':'¡Sigue aprendiendo!'} ${q.e}</div><button class="btn" onclick="qIndex++;renderQ()">${qIndex===questions.length-1?'Ver resultado':'Siguiente pregunta →'}</button>`;}
+function diploma(){let n=document.getElementById('student').value.trim();if(!n){alert('Escribe tu nombre para generar el diploma.');return;}document.getElementById('certname').textContent=n;document.getElementById('certpoints').textContent=points+' puntos';document.getElementById('certificate').classList.remove('hidden');}
+</script>
+</body></html>
